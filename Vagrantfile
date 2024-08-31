@@ -6,12 +6,12 @@ Vagrant.configure("2") do |config|
   if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = false
   end
-  
+
   #Imagen por defecto
   box = 'ubuntu/jammy64'
-  
+
   #Si se ejecuta sobre macOS se configura otra imagen
-  if Vagrant::Util::Platform.darwin? 
+  if Vagrant::Util::Platform.darwin?
     box = "bento/ubuntu-22.04-arm64"
   else
     config.vm.provision "shell", inline: "sudo apt-get update && sudo apt-get install -y virtualbox-guest-x11"
@@ -34,6 +34,8 @@ Vagrant.configure("2") do |config|
   #Permite descargas con certificados vencidos o por http
   config.vm.box_download_insecure = true
 
+  #para evitar tema de permisos
+  config.ssh.insert_key = false
 
   # configuración del nombre de maquina
   config.vm.hostname = "utn-devops.localhost"
