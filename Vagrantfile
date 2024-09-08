@@ -6,10 +6,10 @@ Vagrant.configure("2") do |config|
    if Vagrant.has_plugin?("vagrant-vbguest") then
     config.vbguest.auto_update = false
   end
-  
+
   #Imagen por defecto
   box = 'ubuntu/jammy64'
-  
+
   #Si se ejecuta sobre macOS se configura otra imagen
   if Vagrant::Util::Platform.darwin? 
     box = "bento/ubuntu-22.04-arm64"
@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
   # Ubuntu 64 bits mediante el gestor de maquinas virtuales VirtualBox
   # El directorio completo de boxes se puede ver en la siguiente URL https://app.vagrantup.com/boxes/search
   config.vm.box = box
-  
+
  # Redirecciono puertos desde la maquina virtual a la maquina real. Por ejemplo
   # del puerto 8082 de la VM se podrá acceder a través del puerto 8082 de nuestro navegador.
   # Esto se realiza para poder darle visibilidad a los puertos de la maquina virtual
@@ -30,9 +30,12 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8082, host: 8082, auto_correct: true
   # Puerto en que escuchar el servidor maestro de Puppet
   config.vm.network "forwarded_port", guest: 8140, host: 8140, auto_correct: true
-  
+
   #Permite descargas con certificados vencidos o por http
   config.vm.box_download_insecure = true
+
+  #para evitar tema de permisos
+  config.ssh.insert_key = false
 
   # configuración del nombre de maquina
   config.vm.hostname = "utn-devops.localhost"
